@@ -83,6 +83,14 @@ DATABASES = {
 }
 
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        # other renderers...
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        # other parsers...
+    ],
     
     'DEFAULT_AUTHENTICATION_CLASSES': (
         
@@ -90,6 +98,8 @@ REST_FRAMEWORK = {
     )
     
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from api.models import User
+from api.models import User,PersonalInfo,UserExperience
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 
@@ -34,3 +34,5 @@ class UserModelAdmin(BaseUserAdmin):
     filter_horizontal = []
 
 admin.site.register(User, UserModelAdmin)
+admin.site.register(PersonalInfo)
+admin.site.register(UserExperience)
