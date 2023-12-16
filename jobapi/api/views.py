@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from api.serializers import UserRegistrationSerializer,UserLoginSerializer,PersonalInfoSerializer,UserExperienceSerializer
+from api.serializers import UserRegistrationSerializer,UserLoginSerializer,PersonalInfoSerializer,UserExperienceSerializer,UserEducationSerializer
 from rest_framework.permissions import IsAuthenticated
 import json
 from django.http import Http404
@@ -10,7 +10,7 @@ from django.http import Http404
 from django.contrib.auth import authenticate
 from api.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
-from api.models import  PersonalInfo, UserExperience
+from api.models import  PersonalInfo, UserExperience,UserEducation
 
 
 def get_tokens_for_user(user):
@@ -90,19 +90,19 @@ class PersonalInfoView(APIView):
    
 
 class UserExperienceView(APIView):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         user_experiences = UserExperience.objects.all()
         serializer = UserExperienceSerializer(user_experiences, many=True)
         return Response(serializer.data)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         serializer = UserExperienceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'msg':'your experience has added sucssefully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
       
-    def put(self, request, pk, *args, **kwargs):
+    def put(self, request, pk):
         try:
             user_experience = UserExperience.objects.get(pk=pk)
         except UserExperience.DoesNotExist:
@@ -114,10 +114,48 @@ class UserExperienceView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, *args, **kwargs):
+    def delete(self, request, pk):
         try:
             user_experience = UserExperience.objects.get(pk=pk)
         except UserExperience.DoesNotExist:
+            raise Http404
+
+        user_experience.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+   
+class UserEducationView(APIView):
+    def get(self, request):
+        user_experiences = UserEducation.objects.all()
+        serializer = UserEducationSerializer(user_experiences, many=True)
+        return Response(serializer.data)
+
+
+    def post(self, request):
+        serializer = UserEducationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':'your experience has added sucssefully'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+      
+
+      
+    def put(self, request, pk):
+        try:
+            user_experience = UserEducation.objects.get(pk=pk)
+        except UserEducation.DoesNotExist:
+            raise Http404
+
+        serializer = UserEducationSerializer(user_experience, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+  
+
+    def delete(self, request, pk):
+        try:
+            user_experience = UserEducation.objects.get(pk=pk)
+        except UserEducation.DoesNotExist:
             raise Http404
 
         user_experience.delete()

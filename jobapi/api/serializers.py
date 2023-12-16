@@ -3,7 +3,7 @@ from api.models import User,MyUserManager
 # from django.utils.encoding import smart_str ,force_bytes, DjangoUnicodeDecodeError
 # from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 # from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from api.models import PersonalInfo,UserExperience
+from api.models import PersonalInfo,UserExperience,UserEducation
 
 
 
@@ -44,4 +44,10 @@ class PersonalInfoSerializer(serializers.ModelSerializer):
 class UserExperienceSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserExperience
+        fields = '__all__'
+
+
+class UserEducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserEducation
         fields = '__all__'

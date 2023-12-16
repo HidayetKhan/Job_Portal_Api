@@ -119,3 +119,20 @@ class UserExperience(models.Model):
         # Add custom validation logic
         if self.year_of_experience < 0:
             raise ValidationError("Year of experience must be a non-negative integer.")
+
+class UserEducation(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    institution = models.CharField(max_length=100)
+    degree = models.CharField(max_length=100)
+    field_of_study = models.CharField(max_length=50)
+    start_year = models.DateField()  # Removed extra 'models'
+    end_year = models.DateField()    # Removed extra 'models'
+    grade = models.IntegerField()
+
+    def clean(self):
+        if self.start_year > self.end_year:
+            raise ValidationError("Start year must be before end year.")
+        
+
+    def is_honors_student(self):
+        return self.grade >= 90    
