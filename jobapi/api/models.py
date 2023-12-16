@@ -136,3 +136,9 @@ class UserEducation(models.Model):
 
     def is_honors_student(self):
         return self.grade >= 90    
+    
+
+class UserSkill(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=150)

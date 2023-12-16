@@ -2,15 +2,14 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from api.serializers import UserRegistrationSerializer,UserLoginSerializer,PersonalInfoSerializer,UserExperienceSerializer,UserEducationSerializer
+from api.serializers import UserRegistrationSerializer,UserLoginSerializer,PersonalInfoSerializer,UserExperienceSerializer,UserEducationSerializer,UserSkillSerializer
 from rest_framework.permissions import IsAuthenticated
 import json
 from django.http import Http404
-
 from django.contrib.auth import authenticate
 from api.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
-from api.models import  PersonalInfo, UserExperience,UserEducation
+from api.models import  PersonalInfo, UserExperience,UserEducation,UserSkill
 
 
 def get_tokens_for_user(user):
@@ -111,7 +110,7 @@ class UserExperienceView(APIView):
         serializer = UserExperienceSerializer(user_experience, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response({"msg":"your experience has been updated"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
@@ -148,7 +147,7 @@ class UserEducationView(APIView):
         serializer = UserEducationSerializer(user_experience, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response({"msg":"your education is updated"})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
   
 
@@ -161,3 +160,34 @@ class UserEducationView(APIView):
         user_experience.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
    
+class UserSkillListView(APIView):
+    def get(self, request):
+        user_skills = UserSkill.objects.all()
+        serializer = UserSkillSerializer(user_skills, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = UserSkillSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"msg":"your skill has been uploded"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+   
+
+    def put(self, request, pk):
+        try:
+            user_experience = UserSkill.objects.get(pk=pk)
+        except UserSkill.DoesNotExist:
+            raise Http404
+
+        serializer = UserSkillSerializer(user_experience, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"msg":"your experience has been updated"})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            user_experience = UserSkill.objects.get(pk=pk)
+        except UserSkill.DoesNotExist:
+            raise Http404
