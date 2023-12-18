@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from api.models import User,PersonalInfo,UserExperience,UserEducation,UserSkill
+from api.models import User,PersonalInfo,UserExperience,UserEducation,UserSkill,UserProfile
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # Register your models here.
 
@@ -38,3 +38,4 @@ admin.site.register(PersonalInfo)
 admin.site.register(UserExperience)
 admin.site.register(UserEducation)
 admin.site.register(UserSkill)
+admin.site.register(UserProfile)

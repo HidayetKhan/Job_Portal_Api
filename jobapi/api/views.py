@@ -2,14 +2,14 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from api.serializers import UserRegistrationSerializer,UserLoginSerializer,PersonalInfoSerializer,UserExperienceSerializer,UserEducationSerializer,UserSkillSerializer
+from api.serializers import UserRegistrationSerializer,UserLoginSerializer,PersonalInfoSerializer,UserExperienceSerializer,UserEducationSerializer,UserSkillSerializer,UserProfileSerializer
 from rest_framework.permissions import IsAuthenticated
 import json
 from django.http import Http404
 from django.contrib.auth import authenticate
 from api.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
-from api.models import  PersonalInfo, UserExperience,UserEducation,UserSkill
+from api.models import  PersonalInfo, UserExperience,UserEducation,UserSkill, UserProfile
 
 
 def get_tokens_for_user(user):
@@ -191,3 +191,10 @@ class UserSkillListView(APIView):
             user_experience = UserSkill.objects.get(pk=pk)
         except UserSkill.DoesNotExist:
             raise Http404
+
+
+#i am creating relation ship
+def user_profile_list(request):
+    profiles = UserProfile.objects.all()
+    serializer = UserProfileSerializer(profiles, many=True)
+    return Response(serializer.data)

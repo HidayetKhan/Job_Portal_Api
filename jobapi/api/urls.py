@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path ,include
 from api.views import UserRegistrationView
-from api.views import  UserLoginView ,PersonalInfoView,UserExperienceView,UserEducationView, UserSkillListView
+from api.views import  UserLoginView ,PersonalInfoView,UserExperienceView,UserEducationView, UserSkillListView,user_profile_list
 urlpatterns = [
     path('register/', UserRegistrationView.as_view(),name='register'),
     path('login/', UserLoginView.as_view(),name='login'),
@@ -13,6 +13,9 @@ urlpatterns = [
     path('useredu/<int:pk>/',  UserEducationView.as_view(),name=' useredu'),
     path('userskill/', UserSkillListView.as_view(), name='user_skill_list'),
     path('userskill/<int:pk>/', UserSkillListView.as_view(), name='user_skill_detail'),
+    path('userskill/<int:pk>/', UserSkillListView.as_view(), name='user_skill_detail'),
+    path('user_profiles/', user_profile_list, name='user_profile_list')
+    
 ]
 
     # path('send-reset-password-email/',  SendPasswordResetEmailView.as_view(),name='send-reset-password-email '),

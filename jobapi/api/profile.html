@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profiles</title>
+</head>
+<body>
+    <h1>User Profiles</h1>
+    <ul>
+        {% for profile in profiles %}
+            <li>{{ profile.user.username }} - {{ profile.some_field }}</li>
+            <!-- Replace `some_field` with the actual field you want to display -->
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -142,3 +145,14 @@ class UserSkill(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=150)
+
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, db_index=True)
+    image = models.ImageField(upload_to='media')
+ 
+    def created_profile(sender,instance,created,**kwargs):
+        if created:
+            UserProfile.object.create(user=instance)
+            print('profile created')
+    post_save.connect(created_profile,sender=user)        
